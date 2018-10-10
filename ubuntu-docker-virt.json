@@ -3,9 +3,17 @@
     {
       "type": "shell",
       "scripts": [
-		"scripts/ubuntu_cleanup.sh"
+        "scripts/netfs.sh",
+        "scripts/docker.sh",
+        "scripts/virtualbox.sh"
       ],
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+	{
+      "type": "shell",
+      "script": "scripts/cleanup.sh",
+      "execute_command": "sudo '{{ .Path }}'",
+      "expect_disconnect": true
     }
   ],
   "builders": [
