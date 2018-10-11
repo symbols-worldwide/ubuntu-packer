@@ -55,7 +55,7 @@
       "headless": "true",
       "iso_url": "http://cdimage.ubuntu.com/cdimage/releases/16.04/release/ubuntu-16.04.5-server-arm64.iso",
       "iso_checksum_type": "sha256",
-      "iso_checksum": "acd95edbd0190fcfc74e4177eaedbfc29cda4c51c45542feed62348f28e607e0 ",
+      "iso_checksum": "acd95edbd0190fcfc74e4177eaedbfc29cda4c51c45542feed62348f28e607e0",
       "communicator": "ssh",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
