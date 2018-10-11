@@ -109,7 +109,6 @@
       "ssh_password": "vagrant",
       "ssh_port": 22,
       "ssh_timeout": "600s",
-	  "tools_upload_flavor": "linux",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "vm_name": "ubuntu-docker-virt",
       "vmx_data": {
