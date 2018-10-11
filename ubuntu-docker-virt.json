@@ -4,9 +4,12 @@
       "type": "shell",
       "scripts": [
         "scripts/netfs.sh",
+		"scripts/networking.sh",
+		"scripts/sudoers.sh",
         "scripts/docker.sh",
-        "scripts/virtualbox.sh",
-		"scripts/vmware.sh"
+		"scripts/hyperv.sh",
+		"scripts/vmware.sh",
+		"scripts/virtualbox.sh"
       ],
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
     },
@@ -60,7 +63,7 @@
       "ssh_timeout": "600s",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "vm_name": "ubuntu-docker-virt",
-      "guest_additions_mode": "disable",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "4096"],
         ["modifyvm", "{{.Name}}", "--cpus", "4"]
@@ -96,7 +99,7 @@
       "boot_wait": "10s",
       "disk_size": 2048,
       "http_directory": "http",
-	  "guest_os_type": "linux",
+	  "guest_os_type": "ubuntu-64",
       "headless": "true",
       "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.1-server-amd64.iso",
       "iso_checksum_type": "sha256",
@@ -106,6 +109,7 @@
       "ssh_password": "vagrant",
       "ssh_port": 22,
       "ssh_timeout": "600s",
+	  "tools_upload_flavor": "linux",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "vm_name": "ubuntu-docker-virt",
       "vmx_data": {
@@ -116,7 +120,8 @@
         "ethernet0.connectionType": "nat",
         "ethernet0.present": "TRUE",
         "ethernet0.pcislotnumber": "32"
-      }
+      },
+	  "vmx_remove_ethernet_interfaces": true
     },
     {
       "type": "hyperv-iso",
@@ -141,7 +146,7 @@
         " netcfg/get_hostname=vagrant<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-hyperv.cfg<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
