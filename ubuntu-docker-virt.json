@@ -72,9 +72,9 @@
 	{
       "type": "vmware-iso",
       "boot_command": [
-        "<esc><wait>",
-        "<esc><wait>",
-        "<enter><wait>",
+        "<esc><wait5>",
+        "<esc><wait5>",
+        "<enter><wait10>",
         "/install/vmlinuz<wait>",
         " auto<wait>",
         " console-setup/ask_detect=false<wait>",
@@ -96,7 +96,7 @@
         " -- <wait>",
         "<enter><wait>"
       ],
-      "boot_wait": "10s",
+      "boot_wait": "180s",
       "disk_size": 2048,
       "http_directory": "http",
 	  "guest_os_type": "ubuntu-64",
