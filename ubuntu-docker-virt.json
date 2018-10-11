@@ -96,7 +96,7 @@
       "boot_wait": "10s",
       "disk_size": 2048,
       "http_directory": "http",
-	  "guest_os_type": "ubuntu64Guest",
+	  "guest_os_type": "linux",
       "headless": "true",
       "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.1-server-amd64.iso",
       "iso_checksum_type": "sha256",
