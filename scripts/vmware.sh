@@ -11,7 +11,7 @@ echo Installing VMware prerequisites
 apt install -y libaio1 libpcsclite1
 
 echo Fetching VMware workstation
-wget -O ~/vmware.bin.sh https://www.vmware.com/go/getworkstation-linux
+wget -qO ~/vmware.bin.sh https://www.vmware.com/go/getworkstation-linux
 
 echo Installing VMware workstation
 sh ~/vmware.bin.sh --console --required --eulas-agreed
