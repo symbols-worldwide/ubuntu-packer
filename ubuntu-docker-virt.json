@@ -5,6 +5,7 @@
       "scripts": [
         "scripts/netfs.sh",
 		"scripts/networking.sh",
+		"scripts/ssh.sh",
 		"scripts/sudoers.sh",
         "scripts/docker.sh",
 		"scripts/hyperv.sh",
