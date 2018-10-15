@@ -11,7 +11,7 @@ echo Installing VMware prerequisites
 apt install -y libaio1 libpcsclite1
 
 echo Fetching VMware workstation
-wget -O ~/vmware.bin.sh http://cutiefly.cubbington.eu.widgit.com/VMware-Workstation-Full-14.1.3-9474260.x86_64.bundle
+wget -O ~/vmware.bin.sh http://snorlax.cubbington.eu.widgit.com/files/VMware-Workstation-Full-14.1.3-9474260.x86_64.bundle
 
 # https://www.vmware.com/go/getworkstation-linux is now version 15 which doesn't seem to have command-line entering of serial number after installation
 
