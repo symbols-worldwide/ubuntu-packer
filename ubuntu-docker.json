@@ -1,0 +1,195 @@
+{
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/netfs.sh",
+		    "scripts/networking.sh",
+		    "scripts/ssh.sh",
+		    "scripts/sudoers.sh",
+        "scripts/docker.sh",
+		    "scripts/get_versions.sh"
+      ],
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    },
+	{
+      "type": "file",
+      "source": "/tmp/versions/",
+      "destination": "./tmp",
+      "direction": "download"
+    },
+	{
+      "type": "shell",
+      "script": "scripts/cleanup.sh",
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+      "expect_disconnect": true
+    }
+  ],
+  "builders": [
+      {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US.UTF-8<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US.UTF-8<wait>",
+        " netcfg/get_domain=vm<wait>",
+        " netcfg/get_hostname=vagrant<wait>",
+        " grub-installer/bootdev=/dev/sda<wait>",
+		" noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "15s",
+      "disk_size": 20480,
+      "http_directory": "http",
+      "guest_os_type": "Ubuntu_64",
+	  "hard_drive_interface": "sata",
+      "headless": "true",
+      "iso_url": "http://cutiefly.cubbington.eu.widgit.com/ubuntu-16.04.5-server-amd64.iso",
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "c94de1cc2e10160f325eb54638a5b5aa38f181d60ee33dae9578d96d932ee5f8",
+      "communicator": "ssh",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "1200s",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "vm_name": "ubuntu-docker-virt",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "4096"],
+        ["modifyvm", "{{.Name}}", "--cpus", "4"]
+      ]
+    },
+	{
+      "type": "vmware-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US.UTF-8<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US.UTF-8<wait>",
+        " netcfg/get_domain=vm<wait>",
+        " netcfg/get_hostname=vagrant<wait>",
+        " grub-installer/bootdev=/dev/sda<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "15s",
+      "disk_size": 20480,
+      "http_directory": "http",
+	  "guest_os_type": "ubuntu-64",
+      "headless": "true",
+      "iso_url": "http://cutiefly.cubbington.eu.widgit.com/ubuntu-18.04.1-server-amd64.iso",
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "a5b0ea5918f850124f3d72ef4b85bda82f0fcd02ec721be19c1a6952791c8ee8",
+      "communicator": "ssh",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "1200s",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "vm_name": "ubuntu-docker-virt",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "4",
+        "memsize": "4096",
+        "numvcpus": "4",
+        "ethernet0.virtualDev": "e1000",
+        "ethernet0.connectionType": "nat",
+        "ethernet0.present": "TRUE",
+        "ethernet0.pcislotnumber": "32"
+      },
+	  "vmx_remove_ethernet_interfaces": true
+    },
+    {
+      "type": "hyperv-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=gb<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_GB<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=gb<wait>",
+        " keyboard-configuration/layout=GB<wait>",
+        " keyboard-configuration/variant=GB<wait>",
+        " locale=en_US<wait>",
+        " netcfg/get_domain=vm<wait>",
+        " netcfg/get_hostname=vagrant<wait>",
+        " grub-installer/bootdev=/dev/sda<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-hyperv.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 20480,
+      "headless": true,
+      "http_directory": "http",
+      "iso_urls": [
+        "iso/ubuntu-18.04.1-server-amd64.iso",
+        "http://cutiefly.cubbington.eu.widgit.com/ubuntu-18.04.1-server-amd64.iso"
+      ],
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "a5b0ea5918f850124f3d72ef4b85bda82f0fcd02ec721be19c1a6952791c8ee8",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+	  "ssh_timeout": "1200s",
+	  "ssh_pty" : "true",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "vm_name": "ubuntu-docker-virt",
+	  "ram_size": 4096,
+	  "cpu": 4,
+	  "generation": 1,
+	  "guest_additions_mode": "disable",
+	  "enable_secure_boot": false
+	}
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "output": "{{user `outfile`}}"
+      }
+    ]
+  ],
+  "variables": {
+    "outfile": "boxen/ubuntu-{{.Provider}}.box"
+  }
+}
