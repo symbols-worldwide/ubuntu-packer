@@ -12,19 +12,6 @@ steps:
         exit_status: "*"
         limit: 3
 
-  - command: "packer build --only=virtualbox-iso --var outfile=boxen/ubuntu-docker-virt-virtualbox.box --var headless=true ubuntu-docker-virt.json"
-    label: "docker-virt-virtualbox"
-    agents:
-      - "packer=true"
-      - "virtualbox=true"
-    artifact_paths:
-      - "boxen/*.box"
-      - "tmp/**/*"
-    retry:
-      automatic:
-        exit_status: "*"
-        limit: 3
-
   - command: "packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-virt-hyperv.box --var headless=true ubuntu-docker-virt.json"
     label: "docker-virt-hyperv"
     agents:
