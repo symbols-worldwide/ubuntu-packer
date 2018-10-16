@@ -4,14 +4,14 @@
       "type": "shell",
       "scripts": [
         "scripts/netfs.sh",
-		"scripts/networking.sh",
-		"scripts/ssh.sh",
-		"scripts/sudoers.sh",
-        "scripts/docker.sh",
-		"scripts/hyperv.sh",
-		"scripts/vmware.sh",
-		"scripts/virtualbox.sh",
-		"scripts/get_versions.sh"
+		    "scripts/networking.sh",
+		    "scripts/ssh.sh",
+		    "scripts/sudoers.sh",
+		    "scripts/vmware.sh",
+		    "scripts/hyperv.sh",
+		    "scripts/virtualbox.sh",
+			"scripts/docker.sh",
+		    "scripts/get_versions.sh"
       ],
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
     },
