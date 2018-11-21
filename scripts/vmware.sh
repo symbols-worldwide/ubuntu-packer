@@ -24,9 +24,13 @@ echo Performing post-installation appeasement of packer and vagrant plugin
 cat <<EOF > /etc/init.d/vmware
 #!/bin/bash
 
-/usr/bin/vmware-networks --status
+/usr/bin/vmware-networks --start
 EOF
 chmod +x /etc/init.d/vmware
+
+# Load VMWare modules at boot so that the vmware networking can start
+echo 'vmnet' > /etc/modules-load.d/vmnet.conf
+echo 'vmmon' > /etc/modules-load.d/vmmon.conf
 
 # hacks to make packer work!
 mkdir -p /etc/vmware/vmnet8/dhcpd
