@@ -20,3 +20,20 @@ cat <<EOF > /etc/systemd/system/docker.service.d/tcp_listen.conf
 ExecStart=
 ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375
 EOF
+
+cat <<EOF > /lib/systemd/system/docker.socket
+[Unit]
+Description=Docker Socket for the API
+PartOf=docker.service
+
+[Socket]
+ListenStream=/var/run/docker.sock
+SocketMode=0660
+SocketUser=root
+SocketGroup=docker
+
+[Install]
+WantedBy=sockets.target
+EOF
+
+ln -s /lib/systemd/system/docker.socket /etc/systemd/system/sockets.target.wants/docker.socket
