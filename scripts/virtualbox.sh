@@ -7,4 +7,4 @@ if [ "$PACKER_BUILDER_TYPE" != "virtualbox-iso" ]; then
   exit 0
 fi
 
-apt install -y virtualbox virtualbox-dkms
+apt install -y virtualbox virtualbox-dkms linux-headers-$(uname -r)
