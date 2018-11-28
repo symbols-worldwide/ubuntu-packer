@@ -10,18 +10,18 @@
 		    "scripts/vmware.sh",
 		    "scripts/hyperv.sh",
 		    "scripts/virtualbox.sh",
-			"scripts/docker.sh",
+			  "scripts/docker.sh",
 		    "scripts/get_versions.sh"
       ],
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
     },
-	{
-      "type": "file",
-      "source": "/tmp/versions/",
-      "destination": "./tmp",
-      "direction": "download"
+    {
+        "type": "file",
+        "source": "/tmp/versions/",
+        "destination": "./tmp",
+        "direction": "download"
     },
-	{
+  	{
       "type": "shell",
       "script": "scripts/cleanup.sh",
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
@@ -29,7 +29,7 @@
     }
   ],
   "builders": [
-      {
+    {
       "type": "virtualbox-iso",
       "boot_command": [
         "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
@@ -52,7 +52,7 @@
         " netcfg/get_domain=vm<wait>",
         " netcfg/get_hostname=vagrant<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
-		" noapic<wait>",
+		    " noapic<wait>",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
         " -- <wait>",
         "<enter><wait>"
@@ -61,7 +61,7 @@
       "disk_size": 20480,
       "http_directory": "http",
       "guest_os_type": "Ubuntu_64",
-	  "hard_drive_interface": "sata",
+	    "hard_drive_interface": "sata",
       "headless": "true",
       "iso_url": "http://cutiefly.cubbington.eu.widgit.com/ubuntu-16.04.5-server-amd64.iso",
       "iso_checksum_type": "sha256",
@@ -79,7 +79,7 @@
         ["modifyvm", "{{.Name}}", "--cpus", "4"]
       ]
     },
-	{
+	  {
       "type": "vmware-iso",
       "boot_command": [
         "<esc><wait>",
@@ -109,7 +109,7 @@
       "boot_wait": "15s",
       "disk_size": 20480,
       "http_directory": "http",
-	  "guest_os_type": "ubuntu-64",
+	    "guest_os_type": "ubuntu-64",
       "headless": "true",
       "iso_url": "http://cutiefly.cubbington.eu.widgit.com/ubuntu-18.04.1-server-amd64.iso",
       "iso_checksum_type": "sha256",
@@ -130,7 +130,7 @@
         "ethernet0.present": "TRUE",
         "ethernet0.pcislotnumber": "32"
       },
-	  "vmx_remove_ethernet_interfaces": true
+	    "vmx_remove_ethernet_interfaces": true
     },
     {
       "type": "hyperv-iso",
@@ -172,17 +172,17 @@
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_port": 22,
-	  "ssh_timeout": "1200s",
-	  "ssh_pty" : "true",
+	    "ssh_timeout": "1200s",
+	    "ssh_pty" : "true",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "vm_name": "ubuntu-docker-virt",
-	  "ram_size": 4096,
-	  "cpu": 4,
-	  "generation": 1,
-	  "guest_additions_mode": "disable",
-	  "enable_secure_boot": false
-	}
+      "ram_size": 4096,
+      "cpu": 4,
+      "generation": 1,
+      "guest_additions_mode": "disable",
+      "enable_secure_boot": false
+    }
   ],
   "post-processors": [
     [
