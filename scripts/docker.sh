@@ -36,4 +36,4 @@ SocketGroup=docker
 WantedBy=sockets.target
 EOF
 
-ln -s /lib/systemd/system/docker.socket /etc/systemd/system/sockets.target.wants/docker.socket
+ln -s /lib/systemd/system/docker.socket /etc/systemd/system/sockets.target.wants/docker.socket || true
