@@ -38,31 +38,31 @@ steps:
         exit_status: "*"
         limit: 3
 
-  # - command: "packer build --only=virtualbox-iso --var outfile=boxen/ubuntu-docker-virtualbox.box --var headless=true ubuntu-docker.json"
-  #   label: "docker-virtualbox"
-  #   agents:
-  #     - "packer=true"
-  #     - "virtualbox=true"
-  #   artifact_paths:
-  #     - "boxen/*.box"
-  #     - "tmp/**/*"
-  #   retry:
-  #     automatic:
-  #       exit_status: "*"
-  #       limit: 3
+#  - command: "packer build --only=virtualbox-iso --var outfile=boxen/ubuntu-docker-virtualbox.box --var headless=true ubuntu-docker.json"
+#    label: "docker-virtualbox"
+#    agents:
+#      - "packer=true"
+#      - "virtualbox=true"
+#    artifact_paths:
+#      - "boxen/*.box"
+#      - "tmp/**/*"
+#    retry:
+#      automatic:
+#        exit_status: "*"
+#        limit: 3
 
-  - command: "hostname && packer fix ubuntu-docker.json > fixhv-ubuntu-docker.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-hyperv.box --var headless=true fixhv-ubuntu-docker.json"
-    label: "docker-hyperv"
-    agents:
-      - "packer=true"
-      - "hyperv=true"
-    artifact_paths:
-      - "boxen/*.box"
-      - "tmp/**/*"
-    retry:
-      automatic:
-        exit_status: "*"
-        limit: 3
+#  - command: "hostname && packer fix ubuntu-docker.json > fixhv-ubuntu-docker.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-hyperv.box --var headless=true fixhv-ubuntu-docker.json"
+#    label: "docker-hyperv"
+#    agents:
+#      - "packer=true"
+#      - "hyperv=true"
+#    artifact_paths:
+#      - "boxen/*.box"
+#      - "tmp/**/*"
+#    retry:
+#      automatic:
+#        exit_status: "*"
+#        limit: 3
 
   - command: "packer build --only=vmware-iso --var outfile=boxen/ubuntu-minimal-vmware_desktop.box --var headless=true ubuntu-minimal.json"
     label: "minimal-vmware"
@@ -77,31 +77,31 @@ steps:
         exit_status: "*"
         limit: 3
 
-  # - command: "packer build --only=virtualbox-iso --var outfile=boxen/ubuntu-minimal-virtualbox.box --var headless=true ubuntu-minimal.json"
-  #   label: "minimal-virtualbox"
-  #   agents:
-  #     - "packer=true"
-  #     - "virtualbox=true"
-  #   artifact_paths:
-  #     - "boxen/*.box"
-  #     - "tmp/**/*"
-  #   retry:
-  #     automatic:
-  #       exit_status: "*"
-  #       limit: 3
+#   - command: "packer build --only=virtualbox-iso --var outfile=boxen/ubuntu-minimal-virtualbox.box --var headless=true ubuntu-minimal.json"
+#     label: "minimal-virtualbox"
+#     agents:
+#       - "packer=true"
+#       - "virtualbox=true"
+#     artifact_paths:
+#       - "boxen/*.box"
+#       - "tmp/**/*"
+#     retry:
+#       automatic:
+#         exit_status: "*"
+#         limit: 3
 
-  - command: "hostname && packer fix ubuntu-minimal.json > fixhv-ubuntu-minimal.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-minimal-hyperv.box --var headless=true fixhv-ubuntu-minimal.json"
-    label: "minimal-hyperv"
-    agents:
-      - "packer=true"
-      - "hyperv=true"
-    artifact_paths:
-      - "boxen/*.box"
-      - "tmp/**/*"
-    retry:
-      automatic:
-        exit_status: "*"
-        limit: 3
+#  - command: "hostname && packer fix ubuntu-minimal.json > fixhv-ubuntu-minimal.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-minimal-hyperv.box --var headless=true fixhv-ubuntu-minimal.json"
+#    label: "minimal-hyperv"
+#    agents:
+#      - "packer=true"
+#      - "hyperv=true"
+#    artifact_paths:
+#      - "boxen/*.box"
+#      - "tmp/**/*"
+#    retry:
+#      automatic:
+#        exit_status: "*"
+#        limit: 3
 
   - wait
 
