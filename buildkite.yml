@@ -113,3 +113,4 @@ steps:
   - wait
 
   - trigger: "build-ci-agent-vm-images"
+    async: true
