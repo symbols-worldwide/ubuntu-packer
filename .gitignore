@@ -3,3 +3,4 @@ packer_cache/
 output-*
 Gemfile.lock
 tmp/
+backup-*.json

@@ -1,68 +1,91 @@
-#!/bin/sh -eux
+#!/bin/bash -eux
 
-# Delete all Linux headers
-dpkg --list \
-  | awk '{ print $2 }' \
-  | grep 'linux-headers' \
-  | xargs apt-get -y purge;
+SSH_USER=${SSH_USERNAME:-vagrant}
+DISK_USAGE_BEFORE_CLEANUP=$(df -h)
 
-# Remove specific Linux kernels, such as linux-image-3.11.0-15-generic but
-# keeps the current kernel and does not touch the virtual packages,
-# e.g. 'linux-image-generic', etc.
-dpkg --list \
-    | awk '{ print $2 }' \
-    | grep 'linux-image-.*-generic' \
-    | grep -v `uname -r` \
-    | xargs apt-get -y purge;
+# Make sure udev does not block our network - http://6.ptmc.org/?p=164
+echo "==> Cleaning up udev rules"
+rm -rf /dev/.udev/
+rm /lib/udev/rules.d/75-persistent-net-generator.rules
 
-# Delete Linux source
-dpkg --list \
-    | awk '{ print $2 }' \
-    | grep linux-source \
-    | xargs apt-get -y purge;
+echo "==> Cleaning up leftover dhcp leases"
+# Ubuntu 10.04
+if [ -d "/var/lib/dhcp3" ]; then
+    rm /var/lib/dhcp3/*
+fi
+# Ubuntu 12.04 & 14.04
+if [ -d "/var/lib/dhcp" ]; then
+    rm /var/lib/dhcp/*
+fi
 
-# Delete development packages
-dpkg --list \
-    | awk '{ print $2 }' \
-    | grep -- '-dev$' \
-    | xargs apt-get -y purge;
+# Blank machine-id (DUID) so machines get unique ID generated on boot.
+# https://www.freedesktop.org/software/systemd/man/machine-id.html#Initialization
+echo "==> Blanking systemd machine-id"
+if [ -f "/etc/machine-id" ]; then
+    truncate -s 0 "/etc/machine-id"
+fi
 
-# delete docs packages
-dpkg --list \
-    | awk '{ print $2 }' \
-    | grep -- '-doc$' \
-    | xargs apt-get -y purge;
+# Add delay to prevent "vagrant reload" from failing
+echo "pre-up sleep 2" >> /etc/network/interfaces
 
-# Delete obsolete networking
-apt-get -y purge ppp pppconfig pppoeconf;
+echo "==> Cleaning up tmp"
+rm -rf /tmp/*
 
-# Delete oddities
-apt-get -y purge popularity-contest installation-report command-not-found command-not-found-data friendly-recovery bash-completion fonts-ubuntu-font-family-console laptop-detect;
+# Cleanup apt cache
+apt-get -y autoremove --purge
+apt-get -y clean
+apt-get -y autoclean
 
-# Exlude the files we don't need w/o uninstalling linux-firmware
-echo "==> Setup dpkg excludes for linux-firmware"
-cat <<_EOF_ | cat >> /etc/dpkg/dpkg.cfg.d/excludes
-#BENTO-BEGIN
-path-exclude=/lib/firmware/*
-path-exclude=/usr/share/doc/linux-firmware/*
-#BENTO-END
-_EOF_
+echo "==> Installed packages"
+dpkg --get-selections | grep -v deinstall
 
-# Delete the massive firmware packages
-rm -rf /lib/firmware/*
-rm -rf /usr/share/doc/linux-firmware/*
+# Remove Bash history
+unset HISTFILE
+rm -f /root/.bash_history
+rm -f /home/${SSH_USER}/.bash_history
 
-apt-get -y autoremove;
-apt-get -y clean;
+# Clean up log files
+find /var/log -type f | while read f; do echo -ne '' > "${f}"; done;
 
-# Remove docs
-rm -rf /usr/share/doc/*
+echo "==> Clearing last login information"
+>/var/log/lastlog
+>/var/log/wtmp
+>/var/log/btmp
 
-# Remove caches
-find /var/cache -type f -exec rm -rf {} \;
+# Whiteout /boot
+count=$(df --sync -kP /boot | tail -n1 | awk -F ' ' '{print $4}')
+let count--
+dd if=/dev/zero of=/boot/whitespace bs=1024 count=$count
+rm /boot/whitespace
 
-# delete any logs that have built up during the install
-find /var/log/ -name *.log -exec rm -f {} \;
+echo '==> Clear out swap and disable until reboot'
+set +e
+swapuuid=$(/sbin/blkid -o value -l -s UUID -t TYPE=swap)
+case "$?" in
+    2|0) ;;
+    *) exit 1 ;;
+esac
 
-# Blank netplan machine-id (DUID) so machines get unique ID generated on boot.
-truncate -s 0 /etc/machine-id
+set -e
+if [ "x${swapuuid}" != "x" ]; then
+    # Whiteout the swap partition to reduce box size
+    # Swap is disabled till reboot
+    swappart=$(readlink -f /dev/disk/by-uuid/$swapuuid)
+    /sbin/swapoff "${swappart}"
+    dd if=/dev/zero of="${swappart}" bs=1M || echo "dd exit code $? is suppressed"
+    /sbin/mkswap -U "${swapuuid}" "${swappart}"
+fi
+
+# Zero out the free space to save space in the final image
+dd if=/dev/zero of=/EMPTY bs=1M  || echo "dd exit code $? is suppressed"
+rm -f /EMPTY
+
+# Make sure we wait until all the data is written to disk, otherwise
+# Packer might quite too early before the large files are deleted
+sync
+
+echo "==> Disk usage before cleanup"
+echo "${DISK_USAGE_BEFORE_CLEANUP}"
+
+echo "==> Disk usage after cleanup"
+df -h

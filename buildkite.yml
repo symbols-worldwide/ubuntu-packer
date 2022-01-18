@@ -1,6 +1,7 @@
 steps:
-  - command: "packer build --only=vmware-iso --var outfile=boxen/ubuntu-docker-virt-vmware_desktop.box --var headless=true ubuntu-docker-virt.json"
+  - command: "packer build --only=vmware-iso --var outfile=boxen/ubuntu-docker-virt-vmware_desktop.box --var-file=ubuntu2004.json --var headless=true ubuntu-docker-virt.json"
     label: "docker-virt-vmware"
+    if: "false"
     agents:
       - "packer=true"
       - "vmware=true"
@@ -12,8 +13,9 @@ steps:
         exit_status: "*"
         limit: 3
 
-  - command: "hostname && packer fix ubuntu-docker-virt.json > fixhv-ubuntu-docker-virt.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-virt-hyperv.box --var headless=true fixhv-ubuntu-docker-virt.json"
+  - command: "hostname && packer fix ubuntu-docker-virt.json > fixhv-ubuntu-docker-virt.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-virt-hyperv.box --var-file=ubuntu2004.json --var headless=true fixhv-ubuntu-docker-virt.json"
     label: "docker-virt-hyperv"
+    if: "false"
     agents:
       - "packer=true"
       - "hyperv=true"
@@ -25,8 +27,9 @@ steps:
         exit_status: "*"
         limit: 3
         
-  - command: "packer build --only=vmware-iso --var outfile=boxen/ubuntu-docker-vmware_desktop.box --var headless=true ubuntu-docker.json"
+  - command: "packer build --only=vmware-iso --var outfile=boxen/ubuntu-docker-vmware_desktop.box --var-file=ubuntu2004.json --var headless=true ubuntu-docker.json"
     label: "docker-vmware"
+    if: "false"
     agents:
       - "packer=true"
       - "vmware=true"
@@ -64,7 +67,7 @@ steps:
 #        exit_status: "*"
 #        limit: 3
 
-  - command: "packer build --only=vmware-iso --var outfile=boxen/ubuntu-minimal-vmware_desktop.box --var headless=true ubuntu-minimal.json"
+  - command: "packer build --only=vmware-iso --var-file=ubuntu2004.json --var outfile=boxen/ubuntu-minimal-vmware_desktop.box --var headless=true ubuntu-minimal.json"
     label: "minimal-vmware"
     agents:
       - "packer=true"
