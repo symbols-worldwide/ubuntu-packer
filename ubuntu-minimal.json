@@ -4,13 +4,9 @@
     {
       "boot_wait": "3s",
       "boot_command": [
-          "<esc><esc><esc>",
-          "set gfxpayload=keep<enter>",
-          "linux /casper/vmlinuz ",
-          "\"ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/\" ",
-          "quiet autoinstall ---<enter>",
-          "initrd /casper/initrd<enter>",
-          "boot<enter>"
+        "<enter><enter><f6><esc><wait> ",
+        "autoinstall ds=nocloud-net;seedfrom=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+        "<enter><wait>"
       ],
       "disk_size": "{{ user `disk_size` }}",
       "guest_os_type": "{{ user `vmware_guest_os_type` }}",

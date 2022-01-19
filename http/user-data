@@ -1,6 +1,10 @@
 #cloud-config
 autoinstall:
   version: 1
+  keyboard:
+    layout: en
+    variant: uk
+  locale: en_GB
   identity:
     hostname: vagrant
     password: '$6$iCc.WH.j$EuCSsvXtnIX2UnrunKZHApB3uvKuxplkAL1UBtBkab047y/jyn9WnpVAkc57jtqSv.hsLGje.milvneydC.Cw/'
@@ -8,7 +12,7 @@ autoinstall:
   network:
     version: 2
     ethernets:
-      enp0s3:
+      ens33:
         dhcp4: true
         dhcp-identifier: mac
   ssh:
@@ -18,9 +22,9 @@ autoinstall:
     - perl
   late-commands:
     - 'echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" > /target/etc/sudoers.d/vagrant'
+    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
     - chmod 440 /target/etc/sudoers.d/vagrant
-    - apt-get -y install linux-headers-$(uname -r)
-  locale: en_US
-  keyboard: 
-    layout: us
-    variant: ''
+    - apt-get -y install linux-headers-$(uname -r) ntp curl nfs-common build-essential perl dkms
+  user-data:
+    disable_root: false
+    timezone: Europe/London
