@@ -8,9 +8,7 @@ if [ "$PACKER_BUILDER_TYPE" != "vmware-iso" ]; then
 fi
 
 echo Fetching VMware workstation
-wget -O /home/vagrant/vmware.bin.sh http://cutiefly.cubbington.eu.widgit.com/VMware-Workstation-Full-14.1.3-9474260.x86_64.bundle
-
-# https://www.vmware.com/go/getworkstation-linux is now version 15 which doesn't seem to have command-line entering of serial number after installation
+wget -O /home/vagrant/vmware.bin.sh http://cutiefly.cubbington.eu.widgit.com/VMware-Workstation-Full-16.2.1-18811642.x86_64.bundle
 
 echo Installing VMware workstation
 sh /home/vagrant/vmware.bin.sh --console --required --eulas-agreed
