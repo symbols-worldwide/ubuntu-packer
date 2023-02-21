@@ -1,4 +1,16 @@
 steps:
+  - command: "packer build --only=vmware-iso --var outfile=boxen/bookworm-docker-virt-vmware_desktop.box --var headless=true debian12.json"
+    label: "bookworm-docker-virt-vmware"
+    agents:
+      - "packer=true"
+      - "vmware=true"
+    artifact_paths:
+      - "boxen/*.box"
+      - "tmp/**/*"
+    retry:
+      automatic:
+        exit_status: "*"
+        limit: 3
   - command: "packer fix ubuntu-docker-virt.json > fix-ubuntu-docker-virt.json && packer build --only=vmware-iso --var outfile=boxen/ubuntu-docker-virt-vmware_desktop.box --var headless=true fix-ubuntu-docker-virt.json"
     label: "docker-virt-vmware"
     agents:
@@ -11,7 +23,6 @@ steps:
       automatic:
         exit_status: "*"
         limit: 3
-
   - command: "packer fix ubuntu-docker-virt.json > fixhv-ubuntu-docker-virt.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-virt-hyperv.box --var headless=true fixhv-ubuntu-docker-virt.json"
     label: "docker-virt-hyperv"
     agents:
@@ -24,7 +35,7 @@ steps:
       automatic:
         exit_status: "*"
         limit: 3
-        
+       
   - command: "packer fix ubuntu-docker.json > fix-ubuntu-docker.json && packer build --only=vmware-iso --var outfile=boxen/ubuntu-docker-vmware_desktop.box --var headless=true fix-ubuntu-docker.json"
     label: "docker-vmware"
     agents:

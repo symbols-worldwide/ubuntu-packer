@@ -1,0 +1,106 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc>auto preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<enter>"
+      ],
+      "boot_wait": "{{ user `boot_wait` }}",
+      "disk_size": "{{ user `disk_size` }}",
+      "disk_type_id": "0",
+      "guest_os_type": "debian10-64",
+      "headless": true,
+      "http_directory": "debianhttp",
+      "iso_url": "{{ user `iso_url` }}",
+      "iso_checksum": "file:{{ user `iso_checksum_url` }}",
+      "shutdown_command": "echo 'packer'|sudo -S shutdown -P now",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_port": 22,
+      "ssh_timeout": "30m",
+      "ssh_username": "{{ user `ssh_username` }}",
+      "type": "vmware-iso",
+      "vm_name": "{{ user `vm_name` }}",
+      "vmx_data": {
+        "memsize": "{{ user `memsize` }}",
+        "numvcpus": "{{ user `numvcpus` }}",
+        "virtualHW.version": "14"
+      }
+    },
+    {
+      "boot_command": [
+        "<esc>auto preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<enter>"
+      ],
+      "boot_wait": "{{ user `boot_wait` }}",
+      "disk_size": "{{ user `disk_size` }}",
+      "guest_os_type": "Debian_64",
+      "headless": true,
+      "http_directory": "debianhttp",
+      "iso_checksum": "file:{{ user `iso_checksum_url` }}",
+      "iso_url": "{{ user `iso_url` }}",
+      "shutdown_command": "echo 'packer'|sudo -S shutdown -P now",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_port": 22,
+      "ssh_timeout": "30m",
+      "ssh_username": "{{ user `ssh_username` }}",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{ user `memsize` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{ user `numvcpus` }}"
+        ]
+      ],
+      "vm_name": "{{ user `vm_name` }}"
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo 'packer'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "inline": [
+        "apt -y update \u0026\u0026 apt -y upgrade",
+        "apt -y install python3-pip",
+        "pip3 --no-cache-dir install ansible"
+      ],
+      "type": "shell"
+    },
+    {
+      "playbook_file": "debian/setup.yml",
+      "type": "ansible-local"
+    },
+    {
+      "execute_command": "echo 'packer'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "debian/provision-hostname.sh",
+        "debian/provision-apt.sh",
+        "debian/provision-packer.sh",
+        "debian/provision-vagrant.sh",
+        "debian/provision-buildkite.sh",
+        "debian/provision-docker.sh",
+        "debian/provision-vmware.sh",
+        "debian/provision-rootfs.sh",
+        "debian/provision-ssh.sh",
+        "debian/cleanup.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "boot_wait": "15s",
+    "disk_size": "20480",
+    "iso_checksum_type": "sha256",
+    "iso_checksum_url": "https://cdimage.debian.org/cdimage/bookworm_di_alpha2/amd64/iso-cd/SHA256SUMS",
+    "iso_url": "https://cdimage.debian.org/cdimage/bookworm_di_alpha2/amd64/iso-cd/debian-bookworm-DI-alpha2-amd64-netinst.iso",
+    "memsize": "1024",
+    "numvcpus": "1",
+    "ssh_password": "packer",
+    "ssh_username": "packer",
+    "vm_name": "buildkite-bookworm",
+    "outfile": "boxen/bookworm-docker-virt-{{.Provider}}.box"
+  }
+}
