@@ -5,7 +5,7 @@ set -e
 PASS=$(dd if=/dev/random bs=1K count=1 2> /dev/null | md5sum | sed 's/ .*//')
 echo -ne "${PASS}\n${PASS}\n" | passwd
 cat << EOF > /etc/issue
-Widgit BuildKite Agent - Docker and Virtualization enabled
+Widgit VM (Debian Bookworm) - Docker and Virtualization enabled
 
 EOF
 cp /etc/issue /etc/issue.net

@@ -80,7 +80,6 @@
         "debian/provision-apt.sh",
         "debian/provision-packer.sh",
         "debian/provision-vagrant.sh",
-        "debian/provision-buildkite.sh",
         "debian/provision-docker.sh",
         "debian/provision-vmware.sh",
         "debian/provision-rootfs.sh",
