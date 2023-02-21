@@ -2,11 +2,6 @@
 
 set -e
 
-# Old method
-#ldd /usr/lib/vmware/bin/vmware-vmx
-#/usr/lib/vmware/bin/vmware-vmx --new-sn NJ204-6110J-08KDQ-0VAKP-9TVJJ
-#systemctl enable vmware.target
-
 apt-get install -y libaio1 libpcsclite1
 
 wget -O /root/vmware.bundle http://cutiefly.cubbington.eu.widgit.com/vmware-workstation-linux-latest
@@ -25,7 +20,3 @@ network8.name = "NAT"
 network8.device = "vmnet8"
 EOF
 fi
-
-# New method
-/usr/bin/vmware --version || true
-/usr/lib/vmware/bin/licenseTool enter "0562M-0GJ8Q-08CJA-0230P-3ELPJ" "" "" "16.0+" "VMware Workstation" /usr/lib/vmware || true
