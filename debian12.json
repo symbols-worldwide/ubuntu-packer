@@ -64,8 +64,7 @@
       "execute_command": "echo 'packer'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
       "inline": [
         "apt -y update \u0026\u0026 apt -y upgrade",
-        "apt -y install python3-pip",
-        "pip3 --no-cache-dir install ansible"
+        "apt -y install ansible"
       ],
       "type": "shell"
     },
