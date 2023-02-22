@@ -90,7 +90,7 @@
   - name: Mount VBoxGuestAdditions.iso
     mount:
       path: /mnt
-      src: /home/packer/VBoxGuestAdditions.iso
+      src: /home/vagrant/VBoxGuestAdditions.iso
       fstype: iso9660
       opts: ro,loop
       state: mounted
@@ -110,7 +110,7 @@
 
   - name: Delete VBoxGuestAdditions.iso
     file:
-      path: /home/packer/VBoxGuestAdditions.iso
+      path: /home/vagrant/VBoxGuestAdditions.iso
       state: absent
     when: ansible_virtualization_type == "virtualbox"
 

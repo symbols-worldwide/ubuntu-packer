@@ -12,7 +12,7 @@
       "http_directory": "debianhttp",
       "iso_url": "{{ user `iso_url` }}",
       "iso_checksum": "file:{{ user `iso_checksum_url` }}",
-      "shutdown_command": "echo 'packer'|sudo -S shutdown -P now",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_port": 22,
       "ssh_timeout": "30m",
@@ -36,7 +36,7 @@
       "http_directory": "debianhttp",
       "iso_checksum": "file:{{ user `iso_checksum_url` }}",
       "iso_url": "{{ user `iso_url` }}",
-      "shutdown_command": "echo 'packer'|sudo -S shutdown -P now",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_port": 22,
       "ssh_timeout": "30m",
@@ -61,7 +61,7 @@
   ],
   "provisioners": [
     {
-      "execute_command": "echo 'packer'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'vagrant'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
       "inline": [
         "apt -y update \u0026\u0026 apt -y upgrade",
         "apt -y install ansible"
@@ -73,9 +73,8 @@
       "type": "ansible-local"
     },
     {
-      "execute_command": "echo 'packer'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'vagrant'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
       "scripts": [
-        "debian/provision-hostname.sh",
         "debian/provision-apt.sh",
         "debian/provision-packer.sh",
         "debian/provision-vagrant.sh",
@@ -104,8 +103,8 @@
     "iso_url": "https://cdimage.debian.org/cdimage/bookworm_di_alpha2/amd64/iso-cd/debian-bookworm-DI-alpha2-amd64-netinst.iso",
     "memsize": "1024",
     "numvcpus": "1",
-    "ssh_password": "packer",
-    "ssh_username": "packer",
+    "ssh_password": "vagrant",
+    "ssh_username": "vagrant",
     "vm_name": "buildkite-bookworm",
     "outfile": "boxen/bookworm-docker-virt-{{.Provider}}.box"
   }
