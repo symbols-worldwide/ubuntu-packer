@@ -20,3 +20,16 @@ network8.name = "NAT"
 network8.device = "vmnet8"
 EOF
 fi
+
+apt-get install -y linux-headers-$(uname -r)
+cd /usr/lib/vmware/modules/source
+git clone https://github.com/mkubecek/vmware-host-modules
+cd vmware-host-modules
+# this will need changing if the output of "vmware --version" changes significantly
+git checkout workstation-$(vmware --version | sed -e's/VMware Workstation //' | cut -d' ' -f1)
+make install
+
+cat << EOF > /etc/modules-load.d/vmware-modules.conf
+vmmon
+vmnet
+EOF
