@@ -23,7 +23,8 @@
         "memsize": "{{ user `memsize` }}",
         "numvcpus": "{{ user `numvcpus` }}",
         "virtualHW.version": "14"
-      }
+      },
+      "vmx_remove_ethernet_interfaces": true
     },
     {
       "boot_command": [
