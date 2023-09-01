@@ -23,18 +23,19 @@ steps:
       automatic:
         exit_status: "*"
         limit: 3
-  - command: "packer fix ubuntu-docker-virt.json > fixhv-ubuntu-docker-virt.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-virt-hyperv.box --var headless=true fixhv-ubuntu-docker-virt.json"
-    label: "docker-virt-hyperv"
-    agents:
-      - "packer=true"
-      - "hyperv=true"
-    artifact_paths:
-      - "boxen/*.box"
-      - "tmp/**/*"
-    retry:
-      automatic:
-        exit_status: "*"
-        limit: 3
+
+#  - command: "packer fix ubuntu-docker-virt.json > fixhv-ubuntu-docker-virt.json && packer build --only=hyperv-iso --var outfile=boxen/ubuntu-docker-virt-hyperv.box --var headless=true fixhv-ubuntu-docker-virt.json"
+#    label: "docker-virt-hyperv"
+#    agents:
+#      - "packer=true"
+#      - "hyperv=true"
+#    artifact_paths:
+#      - "boxen/*.box"
+#      - "tmp/**/*"
+#    retry:
+#      automatic:
+#        exit_status: "*"
+#        limit: 3
        
   - command: "packer fix ubuntu-docker.json > fix-ubuntu-docker.json && packer build --only=vmware-iso --var outfile=boxen/ubuntu-docker-vmware_desktop.box --var headless=true fix-ubuntu-docker.json"
     label: "docker-vmware"
