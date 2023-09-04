@@ -83,6 +83,7 @@
         "debian/provision-vmware.sh",
         "debian/provision-rootfs.sh",
         "debian/provision-ssh.sh",
+        "debian/provision-networking.sh",
         "debian/cleanup.sh"
       ],
       "type": "shell"

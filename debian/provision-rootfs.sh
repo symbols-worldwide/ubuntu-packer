@@ -39,10 +39,3 @@ EOF
 
 systemctl daemon-reload
 systemctl enable resize-root.service
-
-rm /etc/apparmor.d/sbin.dhclient
-INTF=$(ip a | grep ens | awk -F': ' '{print $2}')
-echo "allow-hotplug ens160" > /etc/network/interfaces.d/default
-echo "iface ens160 inet dhcp" >> /etc/network/interfaces.d/default
-echo "allow-hotplug $INTF" > /etc/network/interfaces.d/guessed
-echo "iface $INTF inet dhcp" >> /etc/network/interfaces.d/guessed
